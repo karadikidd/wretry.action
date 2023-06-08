@@ -43,7 +43,8 @@ function retry(scriptType) {
       console.log('remoteActionPath')
       console.log(remoteActionPath)
       const localActionPath = _.path.nativize(_.path.join(__dirname, '../../../', remoteActionPath.repo));
-      // console.log('localActionPath ' + localActionPath)
+      console.log('localActionPath')
+      console.log(localActionPath)
 
       con.then(() => common.actionClone(localActionPath, remoteActionPath));
       con.then(() => {
