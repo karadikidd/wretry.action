@@ -50,14 +50,15 @@ function retry(scriptType) {
       con.then(() => {
         const config = common.actionConfigRead(localActionPath);
         console.log('$$$$')
-        console.log(config)
         console.log(JSON.stringify(config, null, 2))
+        console.log('$$$$')
         if (!config.runs[scriptType])
           return null;
 
         const optionsStrings = core.getMultilineInput('with');
         console.log('####')
-        // console.log(JSON.stringify(optionsStrings, null, 2))
+        console.log(JSON.stringify(optionsStrings, null, 2))
+        console.log('####')
 
         const options = common.actionOptionsParse(optionsStrings);
         _.map.sureHasOnly(options, config.inputs);
