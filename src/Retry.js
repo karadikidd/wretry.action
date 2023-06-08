@@ -102,10 +102,10 @@ function retry(scriptType) {
             //   console.log('Outputs:', outputs);
             // }
             // });
-            o.pnd.on('message', (data) => {
-              console.log('dataaaa:')
-              console.log(data)
-            });
+            // o.pnd.on('message', (data) => {
+            //   console.log('dataaaa:')
+            //   console.log(data)
+            // });
             o.pnd.on('message', (data) => _.map.extend(process.env, data));
             return o.ready;
           };
