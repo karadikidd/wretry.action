@@ -9,7 +9,9 @@ if( process.platform === 'darwin' )
   process.on( 'exit', () =>
   {
     let result = Object.create( null );
+    console.log(JSON.stringify(process.env, null, 2));
     for( let key in process.env )
+    console.log(key);
     if( ( !key in initEnvs ) || initEnvs[ key ] !== process.env[ key ] )
     result[ key ] = process.env[ key ];
 
