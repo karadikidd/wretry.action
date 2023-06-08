@@ -1,9 +1,9 @@
 const core = require('@actions/core');
 const common = require('./Common.js');
 require('../node_modules/Joined.s');
+const _ = wTools;
 const fs = require('fs');
 const path = require('path');
-const _ = wTools;
 
 //
 
@@ -51,16 +51,16 @@ function retry(scriptType) {
       con.then(() => common.actionClone(localActionPath, remoteActionPath));
       con.then(() => {
         const config = common.actionConfigRead(localActionPath);
-        console.log('$$$$')
-        console.log(JSON.stringify(config, null, 2))
-        console.log('$$$$')
+        // console.log('$$$$')
+        // console.log(JSON.stringify(config, null, 2))
+        // console.log('$$$$')
         if (!config.runs[scriptType])
           return null;
 
         const optionsStrings = core.getMultilineInput('with');
-        console.log('####')
-        console.log(JSON.stringify(optionsStrings, null, 2))
-        console.log('####')
+        // console.log('####')
+        // console.log(JSON.stringify(optionsStrings, null, 2))
+        // console.log('####')
 
         const options = common.actionOptionsParse(optionsStrings);
         _.map.sureHasOnly(options, config.inputs);
@@ -87,20 +87,20 @@ function retry(scriptType) {
                 return
               }
 
-              console.log('env vars:')
-              console.log(process.env)
-              const githubOutputPath = process.env.GITHUB_OUTPUT
-              if (githubOutputPath) {
-                const outputLines = fs.readFileSync(path.resolve(githubOutputPath), 'utf-8').split('\n');
-                const outputs = {};
-                outputLines.forEach(line => {
-                  const [key, value] = line.split('=');
-                  if (key && value) {
-                    outputs[key] = value;
-                  }
-                });
-                console.log('Outputs:', outputs);
-              }
+              // console.log('env vars:')
+              // console.log(process.env)
+              // const githubOutputPath = process.env.GITHUB_OUTPUT
+              // if (githubOutputPath) {
+              //   const outputLines = fs.readFileSync(path.resolve(githubOutputPath), 'utf-8').split('\n');
+              //   const outputs = {};
+              //   outputLines.forEach(line => {
+              //     const [key, value] = line.split('=');
+              //     if (key && value) {
+              //       outputs[key] = value;
+              //     }
+              //   });
+              //   console.log('Outputs:', outputs);
+              // }
             });
             o.pnd.on('message', (data) => _.map.extend(process.env, data));
             return o.ready;
