@@ -40,9 +40,9 @@ function retry(scriptType) {
 
       process.env.RETRY_ACTION = actionName;
       const remoteActionPath = common.remotePathFromActionName(actionName);
-      console.log('remoteActionPath ' + remoteActionPath)
+      // console.log('remoteActionPath ' + remoteActionPath)
       const localActionPath = _.path.nativize(_.path.join(__dirname, '../../../', remoteActionPath.repo));
-      console.log('localActionPath ' + localActionPath)
+      // console.log('localActionPath ' + localActionPath)
 
       con.then(() => common.actionClone(localActionPath, remoteActionPath));
       con.then(() => {
