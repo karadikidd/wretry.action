@@ -56,7 +56,7 @@ function retry(scriptType) {
           return null;
 
         const optionsStrings = core.getMultilineInput('with');
-        // console.log('####')
+        console.log('####')
         // console.log(JSON.stringify(optionsStrings, null, 2))
 
         const options = common.actionOptionsParse(optionsStrings);
