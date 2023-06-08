@@ -123,14 +123,18 @@ function retry(scriptType) {
     const attemptDelay = _.number.from(core.getInput('attempt_delay')) || 0;
 
     return con.then(() => {
-      if (routine)
-        return _.retry
+      if (routine) {
+        const abc = _.retry
           ({
             routine,
             attemptLimit,
             attemptDelay,
             onSuccess,
           });
+        console.log('abc')
+        console.log(abc)
+        return abc;
+      }
       return null;
     });
   })
