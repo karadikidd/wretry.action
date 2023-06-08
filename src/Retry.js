@@ -1,6 +1,8 @@
 const core = require('@actions/core');
 const common = require('./Common.js');
 require('../node_modules/Joined.s');
+const fs = require('fs');
+const path = require('path');
 const _ = wTools;
 
 //
