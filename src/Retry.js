@@ -43,14 +43,15 @@ function retry(scriptType) {
       // console.log('remoteActionPath')
       // console.log(remoteActionPath)
       const localActionPath = _.path.nativize(_.path.join(__dirname, '../../../', remoteActionPath.repo));
-      console.log('localActionPath')
-      console.log(localActionPath)
+      // console.log('localActionPath')
+      // console.log(localActionPath)
 
       con.then(() => common.actionClone(localActionPath, remoteActionPath));
       con.then(() => {
         const config = common.actionConfigRead(localActionPath);
-        // console.log('$$$$')
-        // console.log(JSON.stringify(config, null, 2))
+        console.log('$$$$')
+        console.log(config)
+        console.log(JSON.stringify(config, null, 2))
         if (!config.runs[scriptType])
           return null;
 
