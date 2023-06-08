@@ -47,14 +47,14 @@ function retry(scriptType) {
       con.then(() => common.actionClone(localActionPath, remoteActionPath));
       con.then(() => {
         const config = common.actionConfigRead(localActionPath);
-        console.log('$$$$')
-        console.log(JSON.stringify(config, null, 2))
+        // console.log('$$$$')
+        // console.log(JSON.stringify(config, null, 2))
         if (!config.runs[scriptType])
-        return null;
-        
+          return null;
+
         const optionsStrings = core.getMultilineInput('with');
-        console.log('####')
-        console.log(JSON.stringify(optionsStrings, null, 2))
+        // console.log('####')
+        // console.log(JSON.stringify(optionsStrings, null, 2))
 
         const options = common.actionOptionsParse(optionsStrings);
         _.map.sureHasOnly(options, config.inputs);
