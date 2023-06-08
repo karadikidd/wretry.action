@@ -64,7 +64,7 @@ function retry(scriptType) {
         _.map.sureHasOnly(options, config.inputs);
 
         if (_.strBegins(config.runs.using, 'node')) {
-          const envOptions = common.envOptionsFrom(options, config.inputs);
+          const envOptions = common.envOptionsFrom(options, config);
           common.envOptionsSetup(envOptions);
 
           const runnerPath = _.path.nativize(_.path.join(__dirname, 'Runner.js'));
