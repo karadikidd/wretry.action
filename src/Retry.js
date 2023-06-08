@@ -2,10 +2,6 @@ const core = require('@actions/core');
 const common = require('./Common.js');
 require('../node_modules/Joined.s');
 const _ = wTools;
-const fs = require('fs');
-const path = require('path');
-
-//
 
 function retry(scriptType) {
   return _.Consequence.Try(() => {
@@ -82,29 +78,25 @@ function retry(scriptType) {
               ipc: 1,
             };
             _.process.start(o)//, (error, stdout, stderr) => {
-            // if (error) {
-            //   console.error(`exec error: ${error}`)
-            //   return
-            // }
+              // if (error) {
+              //   console.error(`exec error: ${error}`)
+              //   return
+              // }
 
-            // console.log('env vars:')
-            // console.log(process.env)
-            // const githubOutputPath = process.env.GITHUB_OUTPUT
-            // if (githubOutputPath) {
-            //   const outputLines = fs.readFileSync(path.resolve(githubOutputPath), 'utf-8').split('\n');
-            //   const outputs = {};
-            //   outputLines.forEach(line => {
-            //     const [key, value] = line.split('=');
-            //     if (key && value) {
-            //       outputs[key] = value;
-            //     }
-            //   });
-            //   console.log('Outputs:', outputs);
-            // }
-            // });
-            // o.pnd.on('message', (data) => {
-            //   console.log('dataaaa:')
-            //   console.log(data)
+              // console.log('env vars:')
+              // console.log(process.env)
+              // const githubOutputPath = process.env.GITHUB_OUTPUT
+              // if (githubOutputPath) {
+              //   const outputLines = fs.readFileSync(path.resolve(githubOutputPath), 'utf-8').split('\n');
+              //   const outputs = {};
+              //   outputLines.forEach(line => {
+              //     const [key, value] = line.split('=');
+              //     if (key && value) {
+              //       outputs[key] = value;
+              //     }
+              //   });
+              //   console.log('Outputs:', outputs);
+              // }
             // });
             o.pnd.on('message', (data) => _.map.extend(process.env, data));
             return o.ready;
@@ -123,18 +115,14 @@ function retry(scriptType) {
     const attemptDelay = _.number.from(core.getInput('attempt_delay')) || 0;
 
     return con.then(() => {
-      if (routine) {
-        const abc = _.retry
+      if (routine)
+        return _.retry
           ({
             routine,
             attemptLimit,
             attemptDelay,
             onSuccess,
           });
-        console.log('abc')
-        console.log(abc)
-        return abc;
-      }
       return null;
     });
   })

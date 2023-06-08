@@ -17,7 +17,6 @@ if (process.platform === 'darwin') {
   });
 }
 else {
-  console.log(`#$#$#$ ${JSON.stringify(process.env, null, 2)}`);
   require(process.argv[2])
   process.on('exit', () => process.send(process.env));
 }

@@ -1,4 +1,5 @@
 
-const { retry } = require( './Retry.js' );
-retry( 'main' );
+const { retry } = require('./Retry.js');
+const a = retry('main');
+console.log(a)
 
