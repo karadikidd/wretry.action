@@ -1,8 +1,5 @@
 const core = require('@actions/core');
 const common = require('./Common.js');
-const { stdout, stderr } = require('process');
-const fs = reqiure('fs');
-const path = reqiure('path');
 require('../node_modules/Joined.s');
 const _ = wTools;
 
@@ -101,47 +98,50 @@ function retry(scriptType) {
                   }
                 });
                 console.log('Outputs:', outputs);
-                o.pnd.on('message', (data) => _.map.extend(process.env, data));
-                return o.ready;
               }
-              else {
-                throw _.error.brief('implemented only for NodeJS interpreter');
-              }
-              return null;
             });
-          }
-
-          /* */
-
-          const attemptLimit = _.number.from(core.getInput('attempt_limit')) || 2;
-          const attemptDelay = _.number.from(core.getInput('attempt_delay')) || 0;
-
-          return con.then(() => {
-            if (routine)
-              return _.retry
-                ({
-                  routine,
-                  attemptLimit,
-                  attemptDelay,
-                  onSuccess,
-                });
-            return null;
-          });
-        })
-        .catch((error) => {
-          _.error.attend(error);
-          core.setFailed(_.error.brief(error.message));
-          return error;
-        });
-
-      /* */
-
-      function onSuccess(arg) {
-        if (arg.exitCode !== 0)
-          return false;
-        return true
-      };
+            o.pnd.on('message', (data) => _.map.extend(process.env, data));
+            return o.ready;
+          };
+        }
+        else {
+          throw _.error.brief('implemented only for NodeJS interpreter');
+        }
+        return null;
+      });
     }
 
-    module.exports = { retry };
+    /* */
+
+    const attemptLimit = _.number.from(core.getInput('attempt_limit')) || 2;
+    const attemptDelay = _.number.from(core.getInput('attempt_delay')) || 0;
+
+    return con.then(() => {
+      if (routine)
+        return _.retry
+          ({
+            routine,
+            attemptLimit,
+            attemptDelay,
+            onSuccess,
+          });
+      return null;
+    });
+  })
+    .catch((error) => {
+      _.error.attend(error);
+      core.setFailed(_.error.brief(error.message));
+      return error;
+    });
+
+  /* */
+
+  function onSuccess(arg) {
+    if (arg.exitCode !== 0)
+      return false;
+    return true
+  };
+}
+
+module.exports = { retry };
 
