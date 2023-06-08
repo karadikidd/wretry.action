@@ -1,5 +1,8 @@
 const core = require('@actions/core');
 const common = require('./Common.js');
+const { stdout, stderr } = require('process');
+const fs = reqiure('fs');
+const path = reqiure('path');
 require('../node_modules/Joined.s');
 const _ = wTools;
 
@@ -64,7 +67,7 @@ function retry(scriptType) {
         _.map.sureHasOnly(options, config.inputs);
 
         if (_.strBegins(config.runs.using, 'node')) {
-          const envOptions = common.envOptionsFrom(options, config);
+          const envOptions = common.envOptionsFrom(options, config.inputs);
           common.envOptionsSetup(envOptions);
 
           const runnerPath = _.path.nativize(_.path.join(__dirname, 'Runner.js'));
@@ -79,49 +82,66 @@ function retry(scriptType) {
               mode: 'spawn',
               ipc: 1,
             };
-            _.process.start(o);
-            o.pnd.on('message', (data) => _.map.extend(process.env, data));
-            return o.ready;
-          };
-        }
-        else {
-          throw _.error.brief('implemented only for NodeJS interpreter');
-        }
-        return null;
-      });
+            _.process.start(o, (error, stdout, stderr) => {
+              if (error) {
+                console.error(`exec error: ${error}`)
+                return
+              }
+
+              console.log('env vars:')
+              console.log(process.env)
+              const githubOutputPath = process.env.GITHUB_OUTPUT
+              if (githubOutputPath) {
+                const outputLines = fs.readFileSync(path.resolve(githubOutputPath), 'utf-8').split('\n');
+                const outputs = {};
+                outputLines.forEach(line => {
+                  const [key, value] = line.split('=');
+                  if (key && value) {
+                    outputs[key] = value;
+                  }
+                });
+                console.log('Outputs:', outputs);
+                o.pnd.on('message', (data) => _.map.extend(process.env, data));
+                return o.ready;
+              }
+              else {
+                throw _.error.brief('implemented only for NodeJS interpreter');
+              }
+              return null;
+            });
+          }
+
+          /* */
+
+          const attemptLimit = _.number.from(core.getInput('attempt_limit')) || 2;
+          const attemptDelay = _.number.from(core.getInput('attempt_delay')) || 0;
+
+          return con.then(() => {
+            if (routine)
+              return _.retry
+                ({
+                  routine,
+                  attemptLimit,
+                  attemptDelay,
+                  onSuccess,
+                });
+            return null;
+          });
+        })
+        .catch((error) => {
+          _.error.attend(error);
+          core.setFailed(_.error.brief(error.message));
+          return error;
+        });
+
+      /* */
+
+      function onSuccess(arg) {
+        if (arg.exitCode !== 0)
+          return false;
+        return true
+      };
     }
 
-    /* */
-
-    const attemptLimit = _.number.from(core.getInput('attempt_limit')) || 2;
-    const attemptDelay = _.number.from(core.getInput('attempt_delay')) || 0;
-
-    return con.then(() => {
-      if (routine)
-        return _.retry
-          ({
-            routine,
-            attemptLimit,
-            attemptDelay,
-            onSuccess,
-          });
-      return null;
-    });
-  })
-    .catch((error) => {
-      _.error.attend(error);
-      core.setFailed(_.error.brief(error.message));
-      return error;
-    });
-
-  /* */
-
-  function onSuccess(arg) {
-    if (arg.exitCode !== 0)
-      return false;
-    return true
-  };
-}
-
-module.exports = { retry };
+    module.exports = { retry };
 
