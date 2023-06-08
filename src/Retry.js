@@ -81,26 +81,30 @@ function retry(scriptType) {
               mode: 'spawn',
               ipc: 1,
             };
-            _.process.start(o, (error, stdout, stderr) => {
-              if (error) {
-                console.error(`exec error: ${error}`)
-                return
-              }
+            _.process.start(o)//, (error, stdout, stderr) => {
+            // if (error) {
+            //   console.error(`exec error: ${error}`)
+            //   return
+            // }
 
-              // console.log('env vars:')
-              // console.log(process.env)
-              // const githubOutputPath = process.env.GITHUB_OUTPUT
-              // if (githubOutputPath) {
-              //   const outputLines = fs.readFileSync(path.resolve(githubOutputPath), 'utf-8').split('\n');
-              //   const outputs = {};
-              //   outputLines.forEach(line => {
-              //     const [key, value] = line.split('=');
-              //     if (key && value) {
-              //       outputs[key] = value;
-              //     }
-              //   });
-              //   console.log('Outputs:', outputs);
-              // }
+            // console.log('env vars:')
+            // console.log(process.env)
+            // const githubOutputPath = process.env.GITHUB_OUTPUT
+            // if (githubOutputPath) {
+            //   const outputLines = fs.readFileSync(path.resolve(githubOutputPath), 'utf-8').split('\n');
+            //   const outputs = {};
+            //   outputLines.forEach(line => {
+            //     const [key, value] = line.split('=');
+            //     if (key && value) {
+            //       outputs[key] = value;
+            //     }
+            //   });
+            //   console.log('Outputs:', outputs);
+            // }
+            // });
+            o.pnd.on('message', (data) => {
+              console.log('dataaaa:')
+              console.log(data)
             });
             o.pnd.on('message', (data) => _.map.extend(process.env, data));
             return o.ready;
